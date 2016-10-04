@@ -4,11 +4,11 @@
 
 export default function Circle(coords, idx) {
   this.coordinates = _extends({}, coords);
-  this.color = getRandomColor();
-  this.node = getNode(this.color, this.coordinates, idx);
+  this.color = randomColor();
+  this.node = createNode(this.color, this.coordinates, idx);
 }
 
-function getNode(color, coords, idx) {
+function createNode(color, coords, idx) {
   const radius = 50;
   const y = coords.y - radius;
   const x = coords.x - radius;
@@ -17,7 +17,7 @@ function getNode(color, coords, idx) {
   return div.firstChild;
 }
 
-function getRandomColor() {
+function randomColor() {
   const letters = '0123456789ABCDEF';
   let color = '#';
   for (let i = 0; i < 6; i++) {
