@@ -42,6 +42,9 @@ Playfield.prototype.fieldEvents = function fieldEvents() {
       }
     }
   });
+  this.node.addEventListener('circlemove', event => {
+    console.log('circlemove');
+  });
 };
 
 /**
