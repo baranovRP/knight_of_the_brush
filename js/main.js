@@ -2,6 +2,8 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-import func from './file';
+import Playfield from './playfield';
 
 const document = window.document;
+
+const pl = new Playfield();
