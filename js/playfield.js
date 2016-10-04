@@ -43,10 +43,15 @@ Playfield.prototype.fieldEvents = function fieldEvents() {
   });
 };
 
+/**
+ * Create initial set of circles
+ * @returns {Array}
+ */
 function init() {
+  const length = 10;
   const coords = [];
-  while (coords.length < 10) {
-    const center = generateCoordinates();
+  while (coords.length < length) {
+    const center = randomCoordinates();
     if (!isCrossed(coords, center)) {
       coords.push(new Circle(center, counter++));
     }
@@ -54,19 +59,28 @@ function init() {
   return coords;
 }
 
-function generateCoordinates() {
+/**
+ * Generate random coordinates
+ * @returns {{x: number, y: number}}
+ */
+function randomCoordinates() {
   const radius = 50;
-  const element = document.querySelector('body');
-  const width = element.clientWidth;
-  const height = element.clientHeight;
+  const width = this.node.clientWidth;
+  const height = this.node.clientHeight;
 
-  const newX = getRandomInt(radius, width - radius);
-  const newY = getRandomInt(radius, height - radius);
+  const newX = randomInt(radius, width - radius);
+  const newY = randomInt(radius, height - radius);
 
   return { x: newX, y: newY };
 }
 
-function getRandomInt(mn, mx) {
+/**
+ * Generate random int including both limits (min, max)
+ * @param {number} mn
+ * @param {number} mx
+ * @returns {number}
+ */
+function randomInt(mn, mx) {
   const min = Math.ceil(mn);
   const max = Math.floor(mx);
   return Math.floor(Math.random() * ((max - min) + 1)) + min;
