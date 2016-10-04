@@ -7,9 +7,10 @@ import Circle from './circle';
 let counter = 0;
 
 export default function Playfield() {
+  const size = 10;
   this.node = document.body;
   this.fieldEvents();
-  this.circles = init();
+  this.circles = init(this.node, size);
   this.render(this.circles);
 }
 
@@ -44,14 +45,15 @@ Playfield.prototype.fieldEvents = function fieldEvents() {
 };
 
 /**
- * Create initial set of circles
+ * Create initial array of circles
+ * @param {Object} fieldSize
+ * @param {number} length
  * @returns {Array}
  */
-function init() {
-  const length = 10;
+function init(fieldSize, length) {
   const coords = [];
   while (coords.length < length) {
-    const center = randomCoordinates();
+    const center = randomCoordinates(fieldSize);
     if (!isCrossed(coords, center)) {
       coords.push(new Circle(center, counter++));
     }
@@ -61,12 +63,13 @@ function init() {
 
 /**
  * Generate random coordinates
+ * @param {Object} fieldSize
  * @returns {{x: number, y: number}}
  */
-function randomCoordinates() {
+function randomCoordinates(fieldSize) {
   const radius = 50;
-  const width = this.node.clientWidth;
-  const height = this.node.clientHeight;
+  const width = fieldSize.clientWidth;
+  const height = fieldSize.clientHeight;
 
   const newX = randomInt(radius, width - radius);
   const newY = randomInt(radius, height - radius);
