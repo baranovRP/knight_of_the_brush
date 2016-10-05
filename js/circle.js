@@ -6,7 +6,7 @@ export default function Circle(coords, idx, radius) {
   this.coordinates = _extends({}, coords);
   this.radius = radius;
   this.color = randomColor();
-  this.node = createNode(this, idx);
+  this.node = this._createNode(idx);
   this.circleEvents();
 }
 
@@ -40,8 +40,6 @@ Circle.prototype.circleEvents = function move() {
 
     document.addEventListener('mouseup', () => {
       self.node.classList.remove('moving');
-      // self.removeEventListener('mousemove');
-      // self.removeEventListener('mouseup');
 
       self.node.dispatchEvent(new CustomEvent('circlemove', {
         detail: { circle: this },
@@ -60,15 +58,14 @@ Circle.prototype.setStyles = function setStyles(obj) {
 
 /**
  * Create circle's node
- * @param {Object} obj
  * @param {number} idx
  * @returns {Node}
  */
-function createNode(obj, idx) {
-  const y = obj.coordinates.y - obj.radius;
-  const x = obj.coordinates.x - obj.radius;
+Circle.prototype._createNode = function _createNode(idx) {
+  const y = this.coordinates.y - this.radius;
+  const x = this.coordinates.x - this.radius;
   const div = document.createElement('div');
-  div.innerHTML = `<div class="circle" id = ${idx} style="top: ${y}px; left: ${x}px; background: ${obj.color}"></div>`;
+  div.innerHTML = `<div class="circle" id = ${idx} style="top: ${y}px; left: ${x}px; background: ${this.color}"></div>`;
   return div.firstChild;
 }
 
