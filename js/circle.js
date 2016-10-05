@@ -2,15 +2,15 @@
 /* eslint no-global-assign: "warn" */
 /* eslint-env browser */
 
-export default function Circle(coords, idx) {
+export default function Circle(coords, idx, radius) {
   this.coordinates = _extends({}, coords);
+  this.radius = radius;
   this.color = randomColor();
-  this.node = createNode(this.color, this.coordinates, idx);
+  this.node = createNode(this, idx);
   this.circleEvents();
 }
 
 Circle.prototype.circleEvents = function move() {
-  const radius = 50;
   const self = this;
 
   self.node.addEventListener('mousedown', (event) => {
@@ -31,8 +31,8 @@ Circle.prototype.circleEvents = function move() {
       }
       const delta = computeDelta(e, self.coordinates);
 
-      self.node.style.top = `${(self.coordinates.y - radius) + delta.y}px`;
-      self.node.style.left = `${(self.coordinates.x - radius) + delta.x}px`;
+      self.node.style.top = `${(self.coordinates.y - self.radius) + delta.y}px`;
+      self.node.style.left = `${(self.coordinates.x - self.radius) + delta.x}px`;
 
       self.coordinates.x = e.x;
       self.coordinates.y = e.y;
@@ -52,28 +52,30 @@ Circle.prototype.circleEvents = function move() {
   });
 };
 
-Circle.l = function () {
-
+Circle.prototype.setStyles = function setStyles(obj) {
+  this.node.style.top = obj.coordinates.y;
+  this.node.style.left = obj.coordinates.x;
+  this.node.style.backgroundColor = obj.color;
 };
 
-Circle.prototype.getCoordinates = function getCoordinates() {
-
-};
-
-Circle.prototype.setCoordinatesStyle = function setCoordinatesStyle(coords) {
-  this.node.style.top = coords.y;
-  this.node.style.left = coords.x;
-};
-
-function createNode(color, coords, idx) {
-  const radius = 50;
-  const y = coords.y - radius;
-  const x = coords.x - radius;
+/**
+ * Create circle's node
+ * @param {Object} obj
+ * @param {number} idx
+ * @returns {Node}
+ */
+function createNode(obj, idx) {
+  const y = obj.coordinates.y - obj.radius;
+  const x = obj.coordinates.x - obj.radius;
   const div = document.createElement('div');
-  div.innerHTML = `<div class="circle" id = ${idx} style="top: ${y}px; left: ${x}px; background: ${color}"></div>`;
+  div.innerHTML = `<div class="circle" id = ${idx} style="top: ${y}px; left: ${x}px; background: ${obj.color}"></div>`;
   return div.firstChild;
 }
 
+/**
+ * Generate random hex color
+ * @returns {string}
+ */
 function randomColor() {
   const letters = '0123456789ABCDEF';
   let color = '#';
@@ -96,14 +98,14 @@ function computeDelta(el1, el2) {
 }
 
 const _extends = Object.assign || function (target) {
-    for (let i = 1; i < arguments.length; i++) {
-      const source = arguments[i];
-      for (let key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
+  for (let i = 1; i < arguments.length; i++) {
+    const source = arguments[i];
+    for (let key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
       }
     }
-    return target;
-  };
+  }
+  return target;
+};
 
