@@ -4,6 +4,4 @@
 
 import Playfield from './playfield';
 
-const document = window.document;
-
-const pl = new Playfield();
+const field = new Playfield(50);
