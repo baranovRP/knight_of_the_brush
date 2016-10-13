@@ -59,10 +59,10 @@ Circle.prototype.circleEvents = function move() {
   });
 };
 
-Circle.prototype.setStyles = function setStyles(obj) {
-  this.node.style.top = `${obj.coordinates.y - obj.radius}px`;
-  this.node.style.left = `${obj.coordinates.x - obj.radius}px`;
-  this.node.style.backgroundColor = obj.color;
+Circle.prototype.setStyles = function setStyles() {
+  this.node.style.top = `${this.coordinates.y - this.radius}px`;
+  this.node.style.left = `${this.coordinates.x - this.radius}px`;
+  this.node.style.backgroundColor = this.color;
 };
 
 /**

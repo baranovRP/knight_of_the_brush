@@ -61,7 +61,7 @@ Playfield.prototype.fieldEvents = function fieldEvents() {
         circle.coordinates.y = (nearestCircle.coordinates.y + circle.coordinates.y) / 2;
         circle.coordinates.x = (nearestCircle.coordinates.x + circle.coordinates.x) / 2;
         this.removeCircle(nearestCircle.node);
-        circle.setStyles(circle);
+        circle.setStyles();
         list = this.circles.filter(i => i !== circle);
       }
     }
