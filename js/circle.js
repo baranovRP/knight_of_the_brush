@@ -74,7 +74,10 @@ Circle.prototype._createNode = function _createNode(idx) {
   const y = this.coordinates.y - this.radius;
   const x = this.coordinates.x - this.radius;
   const div = document.createElement('div');
-  div.innerHTML = `<div class="circle" id = ${idx} style="top: ${y}px; left: ${x}px; background: ${this.color}"></div>`;
+  div.innerHTML = `<div class="circle" 
+                        id = ${idx} 
+                        style="top: ${y}px; left: ${x}px; background: ${this.color}">
+                   </div>`;
   return div.firstChild;
 }
 
