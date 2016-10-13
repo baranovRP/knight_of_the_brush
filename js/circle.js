@@ -21,38 +21,47 @@ Circle.prototype.circleEvents = function move() {
       return;
     }
 
-    self.coordinates.x = event.x;
-    self.coordinates.y = event.y;
+    const elCoord = getCoords(self.node);
+    const shiftX = event.pageX - elCoord.left;
+    const shiftY = event.pageY - elCoord.top;
+
     self.node.classList.add('moving');
 
-    document.addEventListener('mousemove', e => {
+    const onMouseMove = e => {
       if (!self.node.classList.contains('moving')) {
         return;
       }
-      const delta = computeDelta(e, self.coordinates);
+      const delta = computeDelta(e, {
+        x: parseInt(self.node.style.left, 10),
+        y: parseInt(self.node.style.top, 10),
+      });
+      self.node.style.top = `${(parseInt(self.node.style.top, 10) - shiftY) + delta.y}px`;
+      self.node.style.left = `${(parseInt(self.node.style.left, 10) - shiftX) + delta.x}px`;
 
-      self.node.style.top = `${(self.coordinates.y - self.radius) + delta.y}px`;
-      self.node.style.left = `${(self.coordinates.x - self.radius) + delta.x}px`;
+      self.coordinates.x = parseInt(self.node.style.left, 10) + self.radius;
+      self.coordinates.y = parseInt(self.node.style.top, 10) + self.radius;
+    };
 
-      self.coordinates.x = e.x;
-      self.coordinates.y = e.y;
-    });
-
-    document.addEventListener('mouseup', () => {
+    const onMouseUp = () => {
       self.node.classList.remove('moving');
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
 
       self.node.dispatchEvent(new CustomEvent('circlemove', {
         detail: { circle: this },
         bubbles: true,
         composed: true,
       }));
-    });
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 };
 
 Circle.prototype.setStyles = function setStyles(obj) {
-  this.node.style.top = obj.coordinates.y;
-  this.node.style.left = obj.coordinates.x;
+  this.node.style.top = `${obj.coordinates.y - obj.radius}px`;
+  this.node.style.left = `${obj.coordinates.x - obj.radius}px`;
   this.node.style.backgroundColor = obj.color;
 };
 
@@ -92,6 +101,15 @@ function computeDelta(el1, el2) {
   const x = el1.x - el2.x;
   const y = el1.y - el2.y;
   return { x, y };
+}
+
+function getCoords(el) {
+  const box = el.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset,
+  };
 }
 
 const _extends = Object.assign || function (target) {
